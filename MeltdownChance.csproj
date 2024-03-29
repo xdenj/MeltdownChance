@@ -46,42 +46,43 @@
   </Target>
 
   <!-- Build zip archive -->
-  <Target Name="BuildArchive" AfterTargets="NetcodePatch">
-    <!-- Create a temporary Publish directory -->
+  <Target Name="PrepForPackaging" AfterTargets="NetcodePatch">
+    <!-- Create a directory for prepared artifacts -->
     <MakeDir Directories="$(ProjectDir)Publish" />
-
-    <!-- Copy files into the temporary Publish directory -->
-    <Copy SourceFiles="$(TargetDir)$(TargetFileName);$(ProjectDir)README.md;$(ProjectDir)CHANGELOG.md;$(ProjectDir)manifest.json;$(ProjectDir)icon.png"
-          DestinationFolder="$(ProjectDir)Publish" />
-
-    <!-- Extract version number from manifest.json using PowerShell -->
-    <Exec Command="powershell -Command &quot;$version=(Get-Content '$(ProjectDir)manifest.json' | ConvertFrom-Json).version_number; echo $version &gt; '$(ProjectDir)version.txt'&quot;" />
-    <ReadLinesFromFile File="$(ProjectDir)version.txt">
-      <Output TaskParameter="Lines" PropertyName="PackageVersion" />
-    </ReadLinesFromFile>
-
-    <!-- Construct timestamp -->
-    <Exec Command="powershell -Command &quot;$dt=Get-Date -Format 'yyyyMMddHHmmss'; echo $dt &gt; '$(ProjectDir)timestamp.txt'&quot;" />
-    <ReadLinesFromFile File="$(ProjectDir)timestamp.txt">
-      <Output TaskParameter="Lines" PropertyName="BuildTimestamp" />
-    </ReadLinesFromFile>
-
-    <!-- Construct new zip file name with version number and timestamp -->
-    <PropertyGroup>
-      <ZipFileName>den-MeltdownChance-$(PackageVersion)-$(BuildTimestamp).zip</ZipFileName>
-    </PropertyGroup>
-
-    <!-- Ensure the Release directory exists -->
-    <MakeDir Directories="$(ProjectDir)Release" />
-
-    <!-- Compress files into zip with the new name -->
-    <Exec Command="powershell -Command &quot;Compress-Archive -Path '$(ProjectDir)Publish\*' -DestinationPath '$(ProjectDir)Release\$(ZipFileName)'&quot;" />
-
-    <!-- Clean up the temporary Publish directory -->
-    <Delete Files="$(ProjectDir)Publish\*" />
-    <RemoveDir Directories="$(ProjectDir)Publish" />
-
-    <!-- Optional: Delete intermediate files -->
-    <Delete Files="$(ProjectDir)version.txt;$(ProjectDir)timestamp.txt" />
+    
+    <!-- Copy specific files to the Publish directory -->
+    <Copy
+      SourceFiles="@(ContentToPack)"
+      DestinationFolder="$(ProjectDir)Publish\%(RecursiveDir)" />
   </Target>
-</Project>
+
+  <Target Name="Package" AfterTargets="PrepForPackaging">
+    <!-- Generate a timestamp -->
+    <PropertyGroup>
+      <CurrentTime>$([System.DateTime]::Now.ToString("yyyyMMddHHmmss"))</CurrentTime>
+    </PropertyGroup>
+    
+    <!-- Define the name of the output zip file, prefixed with 'den-' -->
+    <PropertyGroup>
+      <OutputZipFileName>den-$(AssemblyName)-$(Version)-$(CurrentTime).zip</OutputZipFileName>
+    </PropertyGroup>
+    
+    <!-- Zip the contents of the Publish directory -->
+    <ZipDirectory
+      SourceDirectory="$(ProjectDir)Publish"
+      DestinationFile="$(ProjectDir)Release\$(OutputZipFileName)" />
+    
+    <!-- Optional: Clean up the Publish directory after packaging -->
+    <RemoveDir Directories="$(ProjectDir)Publish" />
+  </Target>
+
+  <!-- Adjusted to include only the MeltdownChance.dll and specific additional files -->
+  <ItemGroup>
+    <ContentToPack Include="$(OutputPath)MeltdownChance.dll" />
+    <ContentToPack Include="$(ProjectDir)README.md" />
+    <ContentToPack Include="$(ProjectDir)CHANGELOG.md" />
+    <ContentToPack Include="$(ProjectDir)manifest.json" />
+    <ContentToPack Include="$(ProjectDir)icon.png" />
+  </ItemGroup>
+  
+  </Project>
