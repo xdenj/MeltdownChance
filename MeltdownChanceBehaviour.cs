@@ -5,17 +5,16 @@ namespace MeltdownChance
     internal class MeltdownChanceBehaviour : NetworkBehaviour
     {
         public static MeltdownChanceBehaviour? Instance { get; private set; }
-        private NetworkVariable<bool>? _isMeltdown;
+
         public bool IsMeltdown
         {
             get => _isMeltdown.Value;
             internal set => _isMeltdown.Value = value;
         }
-
+        private readonly NetworkVariable<bool> _isMeltdown = new() { Value = false, };
 
         public override void OnNetworkSpawn()
         {
-            _isMeltdown = new NetworkVariable<bool>(false);
             if (Instance == null)
             {
                 Instance = this;

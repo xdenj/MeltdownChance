@@ -29,14 +29,5 @@ namespace MeltdownChance.Patches
             }
             return true;
         }
-
-        //[HarmonyPatch("StartMeltdownClientRpc")]
-        //[HarmonyPostfix]
-        //private static void StartMeltdownClientRpcPostPatch()
-        //{
-        //    MeltdownChanceBase.meltdownTimerStart = MeltdownChanceBase.instance.GetMeltdownTimer();
-        //}
-
-
     }
 }

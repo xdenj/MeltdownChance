@@ -5,46 +5,38 @@ namespace MeltdownChance.Patches
     [HarmonyPatch(typeof(LungProp))]
     internal class EquipApparaticePatch
     {
-        [HarmonyPatch("EquipItem")]
+        [HarmonyPatch(nameof(LungProp.EquipItem))]
         [HarmonyPostfix]
         //[HarmonyAfter("me.loaforc.facilitymeltdown")]
         internal static void DisplayMessage(LungProp __instance)
         {
             bool isInFactory = __instance.isInFactory;
-            if (MeltdownChanceBehaviour.Instance == null)
+            bool hasMeltdownStarted = false; // Default to false to ensure variable is always initialized.
+
+            // Simplify determination of hasMeltdownStarted by using conditional logic.
+            if (MeltdownChanceBase.isHost)
             {
-                MeltdownChanceBase.logger.LogWarning("MeltdownChanceBehaviour.Instance is not yet available. (NULL)");
-                return;
+                hasMeltdownStarted = MeltdownChanceBase.EnableMeltdown;
+            }
+            else if (MeltdownChanceBehaviour.Instance is { } meltdownChanceBehaviourInstance)
+            {
+                hasMeltdownStarted = meltdownChanceBehaviourInstance.IsMeltdown;
             }
             else
             {
-                bool hasMeltdownStarted;
-                if (MeltdownChanceBase.isHost)
-                {
-                    hasMeltdownStarted = MeltdownChanceBase.EnableMeltdown;
-                    MeltdownChanceBehaviour.Instance.IsMeltdown = MeltdownChanceBase.EnableMeltdown;
-                }
-                else
-                {
-                    hasMeltdownStarted = (bool)MeltdownChanceBehaviour.Instance.IsMeltdown;
-                }
-
-                MeltdownChanceBase.logger.LogDebug($"Is player host: {MeltdownChanceBase.isHost} | Is apparatice inside Facility?: {isInFactory} | Has meltdown started?: {hasMeltdownStarted}.");
-
-                if (MeltdownChanceBase.FirstPickUp && isInFactory)
-                {
-                    MeltdownChanceBase.FirstPickUp = false;
-                    if (hasMeltdownStarted)
-                    {
-                        HUDManager.Instance.DisplayTip("<color=red>Reactor unstable!</color>", "Meltdown imminent!", true, false, "LC_Tip1");
-                    }
-                    else
-                    {
-                        HUDManager.Instance.DisplayTip("Reactor stable!", "Radiation leaks detected!", false, false, "LC_Tip1");
-                    }
-                }
+                MeltdownChanceBase.logger.LogWarning("MeltdownChanceBehaviour instance is null, it might not have been instantiated or is otherwise unavailable. IsMeltdown flag cannot be read. Client players won't see the correct message when the apparatus is pulled.");
             }
 
+            // Improved logging with clearer context.
+            MeltdownChanceBase.logger.LogDebug($"Is player host: {MeltdownChanceBase.isHost} | Is apparatus inside Facility?: {isInFactory} | Has meltdown started?: {hasMeltdownStarted}.");
+
+            if (MeltdownChanceBase.FirstPickUp && isInFactory)
+            {
+                MeltdownChanceBase.FirstPickUp = false;
+                string tipTitle = hasMeltdownStarted ? "<color=red>Reactor unstable!</color>" : "<color=green>Reactor stable!</color>";
+                string tipMessage = hasMeltdownStarted ? "Meltdown imminent! Evacuate facility immediately!" : "Leaks detected. Radiation levels rising!";
+                HUDManager.Instance.DisplayTip(tipTitle, tipMessage, hasMeltdownStarted, false, "LC_Tip1");
+            }
         }
     }
 }

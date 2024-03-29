@@ -10,11 +10,10 @@ namespace MeltdownChance.Patches
     internal class StartOfRoundPatch
     {
         private static readonly System.Random random = new();
-
         private static int rand;
 
 
-        [HarmonyPatch("Start")]
+        [HarmonyPatch(nameof(StartOfRound.Start))]
         [HarmonyPostfix]
         public static void OnSessionStart(StartOfRound __instance)
         {
@@ -25,7 +24,6 @@ namespace MeltdownChance.Patches
                 MeltdownChanceManager.hideFlags = HideFlags.None;
                 //MeltdownChanceManager.SetActive(true);
                 MeltdownChanceManager.GetComponent<NetworkObject>().Spawn();
-                MeltdownChanceBase.logger.LogInfo("Spawning MeltdownChanceBehaviour.");
             }
             catch (Exception e)
             {
@@ -34,8 +32,7 @@ namespace MeltdownChance.Patches
         }
 
 
-
-        [HarmonyPatch("OnShipLandedMiscEvents")]
+        [HarmonyPatch(nameof(StartOfRound.OnShipLandedMiscEvents))]
         [HarmonyPostfix]
         static void OnShipLandedMiscEventsPatch()
         {
@@ -43,27 +40,33 @@ namespace MeltdownChance.Patches
             MeltdownChanceBase.FirstPickUp = true;
             MeltdownChanceBase.isHost = GameNetworkManager.Instance.isHostingGame;
 
-            rand = random.Next(0, 100);
+            if (MeltdownChanceBase.isHost)
+            {
+                rand = random.Next(0, 100);
+                bool isMeltdown = rand <= MeltdownChanceBase.configChanceValue;
+                MeltdownChanceBase.EnableMeltdown = isMeltdown;
 
-            if (rand <= MeltdownChanceBase.configChanceValue)
-            {
-                MeltdownChanceBase.EnableMeltdown = true;
-                MeltdownChanceBase.logger.LogDebug($"Expect a meltdown this round! Chance: {MeltdownChanceBase.configChanceValue}, RNG {rand}");
-            }
-            else
-            {
-                MeltdownChanceBase.EnableMeltdown = false;
-                MeltdownChanceBase.logger.LogDebug($"Expect no meltdown this round! Chance: {MeltdownChanceBase.configChanceValue}, RNG {rand}");
+                // Refactored logging message to handle both cases
+                MeltdownChanceBase.logger.LogDebug($"Expect {(isMeltdown ? "a " : "no ")}meltdown this round! Meltdown Threshold: {MeltdownChanceBase.configChanceValue}, Random Roll: {rand}");
+
+                if (MeltdownChanceBehaviour.Instance is not { } meltdownChanceBehaviourInstance)
+                {
+                    MeltdownChanceBase.logger.LogWarning("MeltdownChanceBehaviour instance is null, it might not have been instantiated or is otherwise unavailable. IsMeltdown flag cannot be set. Client players won't see the correct message when the apparatus is pulled.");
+                }
+                else
+                {
+                    meltdownChanceBehaviourInstance.IsMeltdown = isMeltdown;
+                }
             }
         }
 
 
-        [HarmonyPatch("ShipHasLeft")]
+        [HarmonyPatch(nameof(StartOfRound.ShipHasLeft))]
         [HarmonyPrefix]
         static void ShipHasLeftPatch()
         {
             MeltdownChanceBase.ResetMeltdownChance();
-            MeltdownChanceBase.logger.LogInfo("Ship has left, resetting.");
+            MeltdownChanceBase.logger.LogInfo("Ship has left, resetting flags.");
         }
 
     }

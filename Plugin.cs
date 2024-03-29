@@ -58,6 +58,7 @@ namespace MeltdownChance
             var types = Assembly.GetExecutingAssembly().GetTypes();
             foreach (var type in types)
             {
+
                 var methods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
                 foreach (var method in methods)
                 {
@@ -78,36 +79,21 @@ namespace MeltdownChance
 
         internal void ApplyPatches()
         {
-            //harmony.PatchAll(typeof(MeltdownChanceBase)); //not needed, apparently
+            PatchAllSafely(typeof(StartOfRoundPatch), "StartOfRound");
+            PatchAllSafely(typeof(MeltdownHandlerPatch), "FacilityMeltdown");
+            PatchAllSafely(typeof(EquipApparaticePatch), "EquipApparatice");
+        }
 
+        private void PatchAllSafely(Type patchType, string name)
+        {
             try
             {
-                harmony.PatchAll(typeof(StartOfRoundPatch));
-                logger.LogInfo("StartOfRound successfully patched!");
+                harmony.PatchAll(patchType);
+                logger.LogInfo($"{name} successfully patched!");
             }
-            catch
+            catch (Exception e)
             {
-                logger.LogError("Couldn't patch StartOfRound!!!");
-            }
-
-            try
-            {
-                harmony.PatchAll(typeof(MeltdownHandlerPatch));
-                logger.LogInfo("FacilityMeltdown successfully patched!");
-            }
-            catch
-            {
-                logger.LogError("Couldn't patch FacilityMeltdown!!!");
-            }
-
-            try
-            {
-                harmony.PatchAll(typeof(EquipApparaticePatch));
-                logger.LogInfo("EquipApparatice successfully patched!");
-            }
-            catch
-            {
-                logger.LogError("Couldn't patch EquipApparatice!!!");
+                logger.LogError($"Couldn't patch {name}!!!:\n{e}");
             }
         }
     }
