@@ -1,0 +1,11 @@
+C:\Users\jelon\source\repos\MeltdownChance\obj\Release\netstandard2.1\MeltdownChance.csproj.AssemblyReference.cache
+C:\Users\jelon\source\repos\MeltdownChance\obj\Release\netstandard2.1\MyPluginInfo.cs
+C:\Users\jelon\source\repos\MeltdownChance\obj\Release\netstandard2.1\MeltdownChance.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jelon\source\repos\MeltdownChance\obj\Release\netstandard2.1\MeltdownChance.AssemblyInfoInputs.cache
+C:\Users\jelon\source\repos\MeltdownChance\obj\Release\netstandard2.1\MeltdownChance.AssemblyInfo.cs
+C:\Users\jelon\source\repos\MeltdownChance\obj\Release\netstandard2.1\MeltdownChance.csproj.CoreCompileInputs.cache
+C:\Users\jelon\source\repos\MeltdownChance\bin\Release\netstandard2.1\MeltdownChance.deps.json
+C:\Users\jelon\source\repos\MeltdownChance\bin\Release\netstandard2.1\MeltdownChance.dll
+C:\Users\jelon\source\repos\MeltdownChance\bin\Release\netstandard2.1\FacilityMeltdown.dll
+C:\Users\jelon\source\repos\MeltdownChance\obj\Release\netstandard2.1\Meltdown.A347DF67.Up2Date
+C:\Users\jelon\source\repos\MeltdownChance\obj\Release\netstandard2.1\MeltdownChance.dll

@@ -1,0 +1,87 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Project Properties -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>MeltdownChance</AssemblyName>
+    <Product>MeltdownChance</Product>
+    <Version>2.5.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <!-- Debug Symbols -->
+  <PropertyGroup>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <!-- Development dependencies -->
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Runtime dependencies -->
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Core" Version="5.*" PrivateAssets="all" />
+    <PackageReference Include="LethalCompany.GameLibs.Steam" Version="*-*" PrivateAssets="all" />
+    <PackageReference Include="UnityEngine.Modules" Version="2022.3.9" IncludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Evaisa.LethalLib" Version="0.14.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FacilityMeltdown">
+      <HintPath>..\..\ref\loaforc-FacilityMeltdown\plugins\FacilityMeltdown\FacilityMeltdown.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
+    <Exec Command="netcode-patch &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')" />
+  </Target>
+
+  <!-- Build zip archive -->
+  <Target Name="BuildArchive" AfterTargets="NetcodePatch">
+    <!-- Create a temporary Publish directory -->
+    <MakeDir Directories="$(ProjectDir)Publish" />
+
+    <!-- Copy files into the temporary Publish directory -->
+    <Copy SourceFiles="$(TargetDir)$(TargetFileName);$(ProjectDir)README.md;$(ProjectDir)CHANGELOG.md;$(ProjectDir)manifest.json;$(ProjectDir)icon.png"
+          DestinationFolder="$(ProjectDir)Publish" />
+
+    <!-- Extract version number from manifest.json using PowerShell -->
+    <Exec Command="powershell -Command &quot;$version=(Get-Content '$(ProjectDir)manifest.json' | ConvertFrom-Json).version_number; echo $version &gt; '$(ProjectDir)version.txt'&quot;" />
+    <ReadLinesFromFile File="$(ProjectDir)version.txt">
+      <Output TaskParameter="Lines" PropertyName="PackageVersion" />
+    </ReadLinesFromFile>
+
+    <!-- Construct timestamp -->
+    <Exec Command="powershell -Command &quot;$dt=Get-Date -Format 'yyyyMMddHHmmss'; echo $dt &gt; '$(ProjectDir)timestamp.txt'&quot;" />
+    <ReadLinesFromFile File="$(ProjectDir)timestamp.txt">
+      <Output TaskParameter="Lines" PropertyName="BuildTimestamp" />
+    </ReadLinesFromFile>
+
+    <!-- Construct new zip file name with version number and timestamp -->
+    <PropertyGroup>
+      <ZipFileName>den-MeltdownChance-$(PackageVersion)-$(BuildTimestamp).zip</ZipFileName>
+    </PropertyGroup>
+
+    <!-- Ensure the Release directory exists -->
+    <MakeDir Directories="$(ProjectDir)Release" />
+
+    <!-- Compress files into zip with the new name -->
+    <Exec Command="powershell -Command &quot;Compress-Archive -Path '$(ProjectDir)Publish\*' -DestinationPath '$(ProjectDir)Release\$(ZipFileName)'&quot;" />
+
+    <!-- Clean up the temporary Publish directory -->
+    <Delete Files="$(ProjectDir)Publish\*" />
+    <RemoveDir Directories="$(ProjectDir)Publish" />
+
+    <!-- Optional: Delete intermediate files -->
+    <Delete Files="$(ProjectDir)version.txt;$(ProjectDir)timestamp.txt" />
+  </Target>
+</Project>
