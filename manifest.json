@@ -1,6 +1,6 @@
 {
   "name": "Meltdown_Chance",
-  "version_number": "2.5.0",
+  "version_number": "2.5.1",
   "website_url": "https://discord.com/channels/1168655651455639582/1210941635421151272",
   "description": "Add a configurable chance to FacilityMeltdown!",
   "dependencies": [

@@ -16,7 +16,7 @@ namespace MeltdownChance
     {
         internal const string MODGUID = "den.meltdownchance";
         internal const string MODNAME = "Meltdown Chance";
-        internal const string MODVERSION = "2.5.0";
+        internal const string MODVERSION = "2.5.1";
 
         private ConfigEntry<int> configChance;
         private ConfigEntry<bool> configMessage;
@@ -112,7 +112,7 @@ namespace MeltdownChance
         "General",                          // Config section
         "MeltdownChance",                     // Key of this config
         100,                    // Default value
-        "Show or disable the Meltdown Chance popup when picking up the Apparatus"    // Description
+        "Chance in percent (0 - 100) at which Meltdowns should occur"    // Description
 );
 
             configMessage = Config.Bind(

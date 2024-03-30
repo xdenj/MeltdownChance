@@ -20,6 +20,9 @@ If you encounter issues or have suggestions, visit the [Discord Post](https://di
 
 ## [Changelog](https://thunderstore.io/c/lethal-company/p/den/Meltdown_Chance/changelog/)
 
+### 2.5.1
+- fixed description in the mod's config
+
 ### 2.5.0
 - introduced networking to determine if meltdown has occured on client players
 - re-added message on picking up apparatice

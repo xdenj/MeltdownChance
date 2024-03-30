@@ -1,3 +1,6 @@
+## 2.5.1
+- fixed description in the mod's config
+
 ## 2.5.0
 - introduced networking to determine if meltdown has occured on client players
 - re-added message on picking up apparatice
