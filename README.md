@@ -1,4 +1,4 @@
-﻿> ## **⚠ WARNING ⚠**
+> ## **⚠ WARNING ⚠**
 > This mod changes the *intended behaviour* of the mod [FacilityMeltdown](https://thunderstore.io/c/lethal-company/p/loaforc/FacilityMeltdown/).  As such, it is neither endorsed, nor supported by the original mod's creator.\
 > If you wish to have FacilityMeltdown's vanilla experience, without the chance aspect added, only install [FacilityMeltdown](https://thunderstore.io/c/lethal-company/p/loaforc/FacilityMeltdown/) and disregard this mod.
 

@@ -50,6 +50,7 @@ namespace MeltdownChance.Patches
                 // Refactored logging message to handle both cases
                 MeltdownChanceBase.logger.LogDebug($"Expect {(isMeltdown ? "a " : "no ")}meltdown this round! Meltdown Threshold: {MeltdownChanceBase.configChanceValue}, Random Roll: {rand}");
 
+
                 if (MeltdownChanceBehaviour.Instance is not { } meltdownChanceBehaviourInstance)
                 {
                     MeltdownChanceBase.logger.LogWarning("MeltdownChanceBehaviour instance is null, it might not have been instantiated or is otherwise unavailable. IsMeltdown flag cannot be set. Client players won't see the correct message when the apparatus is pulled.");
