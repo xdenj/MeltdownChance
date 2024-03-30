@@ -7,7 +7,8 @@
 
 Mod that allows users of [FacilityMeltdown](https://thunderstore.io/c/lethal-company/p/loaforc/FacilityMeltdown/) to set a percentage change of a meltdown happening
 
-- set value between 0 and 100 in the mod's config (chance is based on the host's configured chance) 
+- set value between 0 and 100 in the mod's config (only the hosting player's configured chance is taken into account)
+- select if you want a message to popup when you pick up the apparatus
 
 
 > ## **ℹ️ INFO**
@@ -20,6 +21,8 @@ If you encounter issues or have suggestions, visit the [Discord Post](https://di
 ## [Changelog](https://thunderstore.io/c/lethal-company/p/den/Meltdown_Chance/changelog/)
 
 ### 2.5.0
-- if Meltdown does not occur, only skipping relevant methods if player is host
 - introduced networking to determine if meltdown has occured on client players
-- added message on picking up apparatice back in
+- re-added message on picking up apparatice
+- added new config option to configure whether or not to display a message when picking up the apparatice
+- if Meltdown does not occur, only skipping relevant methods if player is host
+- added check to ensure no action is taken if current level is the Company Building

@@ -18,15 +18,20 @@ namespace MeltdownChance
         internal const string MODNAME = "Meltdown Chance";
         internal const string MODVERSION = "2.5.0";
 
+        private ConfigEntry<int> configChance;
+        private ConfigEntry<bool> configMessage;
+
         public readonly Harmony harmony = new(MODGUID);
 
-        private ConfigEntry<int>? configChance;
         internal static ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource(MeltdownChanceBase.MODGUID);
 
         public static bool EnableMeltdown;
         public static bool FirstPickUp;
+        public static bool isCompany;
         public static int configChanceValue;
+        public static bool configMessageValue;
         public static bool isHost;
+  
 
         internal static MeltdownChanceBase? instance;
         public static GameObject MeltdownChanceManagerPrefab = null!;
@@ -37,11 +42,12 @@ namespace MeltdownChance
             if (instance == null) instance = this;
             else return;
 
+            BindConfigs();
             NetcodePatcher();
             InitializePrefabs();
 
-            configChance = Config.Bind("General", "MeltdownChance", 100, "Chance in % at which meltdowns occur when picking up the apparatice");
             configChanceValue = Math.Max(0, Math.Min(configChance.Value, 100));
+            configMessageValue = configMessage.Value;
 
             ResetMeltdownChance();
             ApplyPatches();
@@ -73,18 +79,21 @@ namespace MeltdownChance
 
         internal static void ResetMeltdownChance()
         {
-            EnableMeltdown = false;
+            EnableMeltdown = true;
             FirstPickUp = false;
+            isCompany = false;
         }
 
         internal void ApplyPatches()
         {
-            PatchAllSafely(typeof(StartOfRoundPatch), "StartOfRound");
-            PatchAllSafely(typeof(MeltdownHandlerPatch), "FacilityMeltdown");
-            PatchAllSafely(typeof(EquipApparaticePatch), "EquipApparatice");
+            TryPatches(typeof(StartOfRoundPatch), "StartOfRound");
+            TryPatches(typeof(MeltdownHandlerPatch), "FacilityMeltdown");
+            TryPatches(typeof(EquipApparaticePatch), "EquipApparatice");
+            //DEBUG ONLY
+            //TryPatches(typeof(ItemDropshipPatch), "ItemDropship");
         }
 
-        private void PatchAllSafely(Type patchType, string name)
+        internal void TryPatches(Type patchType, string name)
         {
             try
             {
@@ -95,6 +104,23 @@ namespace MeltdownChance
             {
                 logger.LogError($"Couldn't patch {name}!!!:\n{e}");
             }
+        }
+
+        internal void BindConfigs()
+        {
+            configChance = Config.Bind(
+        "General",                          // Config section
+        "MeltdownChance",                     // Key of this config
+        100,                    // Default value
+        "Show or disable the Meltdown Chance popup when picking up the Apparatus"    // Description
+);
+
+            configMessage = Config.Bind(
+                    "General",                  // Config subsection
+                    "DisplayPopup",                  // Key of this config
+                    true,                               // Default value
+                    "Display Meltdown Chance popup when picking up the Apparatus"         // Description
+            );
         }
     }
 }

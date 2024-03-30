@@ -28,14 +28,17 @@ namespace MeltdownChance.Patches
             }
 
             // Improved logging with clearer context.
-            MeltdownChanceBase.logger.LogDebug($"Is player host: {MeltdownChanceBase.isHost} | Is apparatus inside Facility?: {isInFactory} | Has meltdown started?: {hasMeltdownStarted}.");
+            MeltdownChanceBase.logger.LogDebug($"Is player host: {MeltdownChanceBase.isHost} | Is apparatus inside Facility?: {isInFactory} | Has meltdown started?: {hasMeltdownStarted} | Is level CompanyBuilding? {MeltdownChanceBase.isCompany}");
 
-            if (MeltdownChanceBase.FirstPickUp && isInFactory)
+            if (MeltdownChanceBase.FirstPickUp && isInFactory && !MeltdownChanceBase.isCompany)
             {
                 MeltdownChanceBase.FirstPickUp = false;
                 string tipTitle = hasMeltdownStarted ? "<color=red>Reactor unstable!</color>" : "<color=green>Reactor stable!</color>";
                 string tipMessage = hasMeltdownStarted ? "Meltdown imminent! Evacuate facility immediately!" : "Leaks detected. Radiation levels rising!";
-                HUDManager.Instance.DisplayTip(tipTitle, tipMessage, hasMeltdownStarted, false, "LC_Tip1");
+                if (MeltdownChanceBase.configMessageValue)
+                {
+                    HUDManager.Instance.DisplayTip(tipTitle, tipMessage, hasMeltdownStarted, false, "LC_Tip1");
+                }
             }
         }
     }

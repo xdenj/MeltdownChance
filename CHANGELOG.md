@@ -1,7 +1,9 @@
 ## 2.5.0
-- if Meltdown does not occur, only skipping relevant methods if player is host
 - introduced networking to determine if meltdown has occured on client players
-- added message on picking up apparatice back in
+- re-added message on picking up apparatice
+- added new config option to configure whether or not to display a message when picking up the apparatice
+- if Meltdown does not occur, only skipping relevant methods if player is host
+- added check to ensure no action is taken if current level is the Company Building
 
 ## 2.4.0
 - Major rewrite of the mod. No longer unpatches and re-patches FacilityMeltdown using Harmony

@@ -34,13 +34,14 @@ namespace MeltdownChance.Patches
 
         [HarmonyPatch(nameof(StartOfRound.OnShipLandedMiscEvents))]
         [HarmonyPostfix]
-        static void OnShipLandedMiscEventsPatch()
+        static void OnShipLandedMiscEventsPatch(StartOfRound __instance)
         {
             MeltdownChanceBase.ResetMeltdownChance();
+            MeltdownChanceBase.isCompany = __instance.currentLevel.levelID == 3;
             MeltdownChanceBase.FirstPickUp = true;
             MeltdownChanceBase.isHost = GameNetworkManager.Instance.isHostingGame;
 
-            if (MeltdownChanceBase.isHost)
+            if (MeltdownChanceBase.isHost && !MeltdownChanceBase.isCompany)
             {
                 rand = random.Next(0, 100);
                 bool isMeltdown = rand <= MeltdownChanceBase.configChanceValue;
