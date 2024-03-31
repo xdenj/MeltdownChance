@@ -1,7 +1,8 @@
-﻿/*using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace MeltdownChance.Patches
 {
+#if DEBUG
     [HarmonyPatch(typeof(ItemDropship))]
     internal class ItemDropshipPatch
     {
@@ -20,4 +21,5 @@ namespace MeltdownChance.Patches
 
         }
     }
-}*/
+#endif
+}

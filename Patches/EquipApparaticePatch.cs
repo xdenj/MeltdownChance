@@ -13,7 +13,7 @@ namespace MeltdownChance.Patches
             bool isInFactory = __instance.isInFactory;
             bool hasMeltdownStarted = false; // Default to false to ensure variable is always initialized.
 
-            // Simplify determination of hasMeltdownStarted by using conditional logic.
+            // Simplify determination of hasMeltdownStarted
             if (MeltdownChanceBase.isHost)
             {
                 hasMeltdownStarted = MeltdownChanceBase.EnableMeltdown;

@@ -89,8 +89,9 @@ namespace MeltdownChance
             TryPatches(typeof(StartOfRoundPatch), "StartOfRound");
             TryPatches(typeof(MeltdownHandlerPatch), "FacilityMeltdown");
             TryPatches(typeof(EquipApparaticePatch), "EquipApparatice");
-            //DEBUG ONLY
-            //TryPatches(typeof(ItemDropshipPatch), "ItemDropship");
+#if DEBUG
+            TryPatches(typeof(ItemDropshipPatch), "ItemDropship");
+#endif
         }
 
         internal void TryPatches(Type patchType, string name)

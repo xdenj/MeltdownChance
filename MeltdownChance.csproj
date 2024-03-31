@@ -64,12 +64,16 @@
     <PropertyGroup>
       <CurrentTime>$([System.DateTime]::Now.ToString("yyyyMMddHHmmss"))</CurrentTime>
     </PropertyGroup>
-    
-    <!-- Define the name of the output zip file, prefixed with 'den-' -->
-    <PropertyGroup>
-      <OutputZipFileName>den-$(AssemblyName)-$(Version)-$(CurrentTime).zip</OutputZipFileName>
+
+    <!-- Define the name of the output zip file, include -DEBUG suffix for Debug builds -->
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <OutputZipFileName>$(Authors)-$(AssemblyName)-$(Version)-DEBUG-$(CurrentTime).zip</OutputZipFileName>
     </PropertyGroup>
-    
+    <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
+      <OutputZipFileName>$(Authors)-$(AssemblyName)-$(Version)-$(CurrentTime).zip</OutputZipFileName>
+    </PropertyGroup>
+
+
     <!-- Zip the contents of the Publish directory -->
     <ZipDirectory
       SourceDirectory="$(ProjectDir)Publish"
