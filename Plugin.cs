@@ -6,6 +6,7 @@ using MeltdownChance.Patches;
 using System;
 using System.Reflection;
 using UnityEngine;
+using MeltdownChance.Configs;
 
 namespace MeltdownChance
 {
@@ -18,8 +19,7 @@ namespace MeltdownChance
         internal const string MODNAME = "Meltdown Chance";
         internal const string MODVERSION = "2.5.1";
 
-        private ConfigEntry<int> configChance;
-        private ConfigEntry<bool> configMessage;
+        public static new MeltdownChanceConfig MyConfig { get; internal set; }
 
         public readonly Harmony harmony = new(MODGUID);
 
@@ -37,17 +37,19 @@ namespace MeltdownChance
         public static GameObject MeltdownChanceManagerPrefab = null!;
 
 
+
         void Awake()
         {
+            MyConfig = new(base.Config);
             if (instance == null) instance = this;
             else return;
 
-            BindConfigs();
             NetcodePatcher();
             InitializePrefabs();
+            
 
-            configChanceValue = Math.Max(0, Math.Min(configChance.Value, 100));
-            configMessageValue = configMessage.Value;
+            configChanceValue = Math.Max(0, Math.Min(MeltdownChanceConfig.configChance.Value, 100));
+            configMessageValue = MeltdownChanceConfig.configMessage.Value;
 
             ResetMeltdownChance();
             ApplyPatches();
@@ -89,9 +91,6 @@ namespace MeltdownChance
             TryPatches(typeof(StartOfRoundPatch), "StartOfRound");
             TryPatches(typeof(MeltdownHandlerPatch), "FacilityMeltdown");
             TryPatches(typeof(EquipApparaticePatch), "EquipApparatice");
-#if DEBUG
-            TryPatches(typeof(ItemDropshipPatch), "ItemDropship");
-#endif
         }
 
         internal void TryPatches(Type patchType, string name)
@@ -107,21 +106,23 @@ namespace MeltdownChance
             }
         }
 
-        internal void BindConfigs()
+#if DEBUG
+        internal void DebugDisplay()
         {
-            configChance = Config.Bind(
-        "General",                          // Config section
-        "MeltdownChance",                     // Key of this config
-        100,                    // Default value
-        "Chance in percent (0 - 100) at which Meltdowns should occur"    // Description
-);
+            string readMeltdown = ""; 
+            if (MeltdownChanceBehaviour.Instance is { } meltdownChanceBehaviourInstance)
+            {
+                readMeltdown = meltdownChanceBehaviourInstance.IsMeltdown.ToString();
+            }
+            else
+            {
+                readMeltdown = "Couldn't read from NetworkVariable (null)";
+            }
 
-            configMessage = Config.Bind(
-                    "General",                  // Config subsection
-                    "DisplayPopup",                  // Key of this config
-                    true,                               // Default value
-                    "Display Meltdown Chance popup when picking up the Apparatus"         // Description
-            );
+            DialogueSegment[] dialogue = new DialogueSegment[1];
+            dialogue[0] = new DialogueSegment { bodyText = readMeltdown, speakerText = "NetworkVariable bool:IsMeltdown" };
+            HUDManager.Instance.ReadDialogue(dialogue);
         }
+#endif
     }
 }
