@@ -15,7 +15,7 @@ namespace MeltdownChance.Patches
 
         [HarmonyPatch(nameof(StartOfRound.Start))]
         [HarmonyPostfix]
-        public static void OnSessionStart(StartOfRound __instance)
+        public static void StartPatch(StartOfRound __instance)
         {
             if (!__instance.IsOwner) return;
             try
@@ -33,8 +33,8 @@ namespace MeltdownChance.Patches
 
 
         [HarmonyPatch(nameof(StartOfRound.OnShipLandedMiscEvents))]
-        [HarmonyPostfix]
-        static void OnShipLandedMiscEventsPatch(StartOfRound __instance)
+        [HarmonyPrefix]
+        static void OnShipLandedMiscEventsPrePatch(StartOfRound __instance)
         {
             MeltdownChanceBase.ResetMeltdownChance();
             MeltdownChanceBase.isCompany = __instance.currentLevel.levelID == 3;
@@ -60,7 +60,17 @@ namespace MeltdownChance.Patches
                     meltdownChanceBehaviourInstance.IsMeltdown = isMeltdown;
                 }
             }
+
         }
+#if DEBUG
+        [HarmonyPatch(nameof(StartOfRound.OnShipLandedMiscEvents))]
+        [HarmonyPostfix]
+        static void OnShipLandedMiscEventsPostPatch(StartOfRound __instance)
+        {
+            MeltdownChanceBase.instance.DebugDisplay();
+        }
+#endif
+
 
 
         [HarmonyPatch(nameof(StartOfRound.ShipHasLeft))]
