@@ -20,7 +20,7 @@ If you encounter issues or have suggestions, visit the [Discord Post](https://di
 
 ## [Changelog](https://thunderstore.io/c/lethal-company/p/den/Meltdown_Chance/changelog/)
 
-### 2.5.2
+### 2.5.2, 2.5.3
 - updated dependency to FacilityMeltdown 2.4.8\
 This version is not compatible with the experimental version of FacilityMeltdown for v50 on the game's beta branch
 

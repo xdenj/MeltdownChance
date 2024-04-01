@@ -10,20 +10,16 @@ using MeltdownChance.Configs;
 
 namespace MeltdownChance
 {
-    [BepInPlugin(MODGUID, MODNAME, MODVERSION)]
+    [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
     [BepInDependency("me.loaforc.facilitymeltdown")]
     [BepInDependency(LethalLib.Plugin.ModGUID, LethalLib.Plugin.ModVersion)]
     public class MeltdownChanceBase : BaseUnityPlugin
     {
-        internal const string MODGUID = "den.meltdownchance";
-        internal const string MODNAME = "Meltdown Chance";
-        internal const string MODVERSION = "2.5.1";
-
         public static new MeltdownChanceConfig MyConfig { get; internal set; }
 
-        public readonly Harmony harmony = new(MODGUID);
+        public readonly Harmony harmony = new(MyPluginInfo.PLUGIN_GUID);
 
-        internal static ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource(MeltdownChanceBase.MODGUID);
+        internal static ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource(MyPluginInfo.PLUGIN_GUID);
 
         public static bool EnableMeltdown;
         public static bool FirstPickUp;
