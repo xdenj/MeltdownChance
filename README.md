@@ -22,7 +22,7 @@ If you encounter issues or have suggestions, visit the [Discord Post](https://di
 
 ### 2.5.2
 - updated dependency to FacilityMeltdown 2.4.8\
-This version is not compatible with v50 on the game's beta branch
+This version is not compatible with the experimental version of FacilityMeltdown for v50 on the game's beta branch
 
 ### 2.5.1
 - fixed description in the mod's config

@@ -1,6 +1,7 @@
 ## 2.5.2
 - updated dependency to FacilityMeltdown 2.4.8\
-This version is not compatible with v50 on the game's beta branch
+This version is not compatible with the experimental version of FacilityMeltdown for v50 on the game's beta branch\
+Once v50 is out on the stable branch, we will update this mod
 
 ## 2.5.1
 - fixed description in the mod's config
