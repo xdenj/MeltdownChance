@@ -1,3 +1,6 @@
+## 2.6.0
+- compatibility with v50 of the game and 2.5.0 of FacilityMeltdown
+
 ## 2.5.2, 2.5.3
 - updated dependency to FacilityMeltdown 2.4.8\
 This version is not compatible with the experimental version of FacilityMeltdown for v50 on the game's beta branch\

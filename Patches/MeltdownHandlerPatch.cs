@@ -1,4 +1,4 @@
-﻿using FacilityMeltdown;
+﻿using FacilityMeltdown.MeltdownSequence.Behaviours;
 using HarmonyLib;
 
 namespace MeltdownChance.Patches

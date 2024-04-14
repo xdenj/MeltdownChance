@@ -36,9 +36,10 @@ namespace MeltdownChance
 
         void Awake()
         {
-            MyConfig = new(base.Config);
+            
             if (instance == null) instance = this;
             else return;
+            MyConfig = new(base.Config);
 
             NetcodePatcher();
             InitializePrefabs();

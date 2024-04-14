@@ -20,16 +20,5 @@ If you encounter issues or have suggestions, visit the [Discord Post](https://di
 
 ## [Changelog](https://thunderstore.io/c/lethal-company/p/den/Meltdown_Chance/changelog/)
 
-### 2.5.2, 2.5.3
-- updated dependency to FacilityMeltdown 2.4.8\
-This version is not compatible with the experimental version of FacilityMeltdown for v50 on the game's beta branch
-
-### 2.5.1
-- fixed description in the mod's config
-
-### 2.5.0
-- introduced networking to determine if meltdown has occured on client players
-- re-added message on picking up apparatice
-- added new config option to configure whether or not to display a message when picking up the apparatice
-- if Meltdown does not occur, only skipping relevant methods if player is host
-- added check to ensure no action is taken if current level is the Company Building
+### 2.6.0
+- compatibility with v50 of the game and 2.5.0 of FacilityMeltdown
