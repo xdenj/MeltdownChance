@@ -1,11 +1,11 @@
 {
   "name": "Meltdown_Chance",
-  "version_number": "2.6.0",
+  "version_number": "2.7.0",
   "website_url": "https://github.com/xdenj/MeltdownChance/",
   "description": "Adds a configurable chance to FacilityMeltdown",
   "dependencies": [
     "BepInEx-BepInExPack-5.4.2100",
-    "loaforc-FacilityMeltdown-2.5.0",
-    "Evaisa-LethalLib-0.15.1"
+    "loaforc-FacilityMeltdown-2.6.18",
+    "Evaisa-LethalLib-0.16.1"
   ]
 }

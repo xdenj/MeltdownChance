@@ -6,7 +6,7 @@
     <AssemblyName>den.meltdownchance</AssemblyName>
     <Product>MeltdownChance</Product>
     <Authors>den</Authors>
-    <Version>2.6.0</Version>
+    <Version>2.7.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>

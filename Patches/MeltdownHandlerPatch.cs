@@ -1,5 +1,6 @@
 ﻿using FacilityMeltdown.MeltdownSequence.Behaviours;
 using HarmonyLib;
+using UnityEngine;
 
 namespace MeltdownChance.Patches
 {
@@ -7,9 +8,9 @@ namespace MeltdownChance.Patches
     internal class MeltdownHandlerPatch
     {
 
-        [HarmonyPatch("MeltdownReadyServerRpc")]
+        [HarmonyPatch("OnNetworkSpawn")]
         [HarmonyPrefix]
-        private static bool MeltdownReadyServerRpcPatch()
+        private static bool OnNetworkSpawnPatch()
         {
             if (MeltdownChanceBase.isHost)
             {
@@ -21,13 +22,32 @@ namespace MeltdownChance.Patches
 
         [HarmonyPatch("StartMeltdownClientRpc")]
         [HarmonyPrefix]
-        private static bool StartMeltdownClientRpcPrePatch()
+        private static bool StartMeltdownClientRpcPatch()
         {
             if (MeltdownChanceBase.isHost)
             {
                 return MeltdownChanceBase.EnableMeltdown;
             }
             return true;
+        }
+        [HarmonyPatch("Update")]
+        [HarmonyPostfix]
+        private static void UpdatePatch(AudioSource ___meltdownMusic)
+        {
+
+            if (MeltdownChanceBehaviour.Instance is { } meltdownChanceBehaviourInstance)
+            {
+                //MeltdownChanceBase.logger.LogDebug($"isMeltdown: {meltdownChanceBehaviourInstance.IsMeltdown}");
+                if (!meltdownChanceBehaviourInstance.IsMeltdown)
+                {
+                    MeltdownChanceBase.SupressMusic(___meltdownMusic);
+                }
+
+            }
+            else
+            {
+                MeltdownChanceBase.logger.LogDebug($"MeltdownChanceBehaviourInstance not found!");
+            }
         }
     }
 }

@@ -20,5 +20,5 @@ If you encounter issues or have suggestions, visit the [Discord Post](https://di
 
 ## [Changelog](https://thunderstore.io/c/lethal-company/p/den/Meltdown_Chance/changelog/)
 
-### 2.6.0
-- compatibility with v50 of the game and 2.5.0 of FacilityMeltdown
+### 2.7.0
+- compatibility with 2.6 of FacilityMeltdown

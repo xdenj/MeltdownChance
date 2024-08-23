@@ -102,6 +102,10 @@ namespace MeltdownChance
                 logger.LogError($"Couldn't patch {name}!!!:\n{e}");
             }
         }
+        internal static void SupressMusic(AudioSource meltdownMusic)
+        {
+            meltdownMusic.volume = 0.0f;
+        }
 
 #if DEBUG
         internal void DebugDisplay()

@@ -1,3 +1,6 @@
+## 2.7.0
+- compatibility with 2.6 of FacilityMeltdown
+
 ## 2.6.0
 - compatibility with v50 of the game and 2.5.0 of FacilityMeltdown
 
