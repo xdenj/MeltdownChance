@@ -12,6 +12,7 @@ namespace MeltdownChance
 {
     [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
     [BepInDependency("me.loaforc.facilitymeltdown")]
+    [BepInDependency("bgn.pizzatowerescapemusic", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(LethalLib.Plugin.ModGUID, LethalLib.Plugin.ModVersion)]
     public class MeltdownChanceBase : BaseUnityPlugin
     {
@@ -88,6 +89,11 @@ namespace MeltdownChance
             TryPatches(typeof(StartOfRoundPatch), "StartOfRound");
             TryPatches(typeof(MeltdownHandlerPatch), "FacilityMeltdown");
             TryPatches(typeof(EquipApparaticePatch), "EquipApparatice");
+            if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("bgn.pizzatowerescapemusic"))
+            {
+                TryPatches(typeof(MusicManagerPatch), "MusicManager");
+            }
+            
         }
 
         internal void TryPatches(Type patchType, string name)

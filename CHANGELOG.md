@@ -1,3 +1,7 @@
+## 2.8.0
+- compatibility with [PizzaTowerEscapeMusic](https://thunderstore.io/c/lethal-company/p/BGN/PizzaTowerEscapeMusic/)  (no music playback when no meltdown is happening)
+- compatibility with 2.7 of FacilityMeltdown
+
 ## 2.7.0
 - compatibility with 2.6 of FacilityMeltdown
 

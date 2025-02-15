@@ -6,7 +6,7 @@
     <AssemblyName>den.meltdownchance</AssemblyName>
     <Product>MeltdownChance</Product>
     <Authors>den</Authors>
-    <Version>2.7.0</Version>
+    <Version>2.8.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
@@ -41,6 +41,12 @@
   <ItemGroup>
     <Reference Include="FacilityMeltdown">
       <HintPath>..\..\ref\loaforc-FacilityMeltdown\plugins\FacilityMeltdown\FacilityMeltdown.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PizzaTowerEscapeMusic">
+      <HintPath>..\..\ref\BGN-PizzaTowerEscapeMusic\BepInEx\plugins\PizzaTowerEscapeMusic.dll</HintPath>
     </Reference>
   </ItemGroup>
 
