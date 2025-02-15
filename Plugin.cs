@@ -28,6 +28,7 @@ namespace MeltdownChance
         public static int configChanceValue;
         public static bool configMessageValue;
         public static bool isHost;
+        public static bool hasRoundStarted = false;
   
 
         internal static MeltdownChanceBase? instance;
@@ -82,6 +83,7 @@ namespace MeltdownChance
             EnableMeltdown = true;
             FirstPickUp = false;
             isCompany = false;
+            hasRoundStarted = false;
         }
 
         internal void ApplyPatches()
@@ -89,10 +91,8 @@ namespace MeltdownChance
             TryPatches(typeof(StartOfRoundPatch), "StartOfRound");
             TryPatches(typeof(MeltdownHandlerPatch), "FacilityMeltdown");
             TryPatches(typeof(EquipApparaticePatch), "EquipApparatice");
-            if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("bgn.pizzatowerescapemusic"))
-            {
-                TryPatches(typeof(MusicManagerPatch), "MusicManager");
-            }
+            TryPatches(typeof(MusicManagerPatch), "MusicManager");
+
             
         }
 

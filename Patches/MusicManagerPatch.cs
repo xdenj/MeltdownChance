@@ -12,6 +12,10 @@ namespace MeltdownChance.Patches
         private static bool PlayMusicPatch()
         {
             bool hasMeltdownStarted = false; // Default to false to ensure variable is always initialized.
+            if (!MeltdownChanceBase.hasRoundStarted)
+            {
+                return true;
+            }
 
             // Simplify determination of hasMeltdownStarted
             if (MeltdownChanceBase.isHost)
@@ -24,7 +28,7 @@ namespace MeltdownChance.Patches
             }
             else
             {
-                MeltdownChanceBase.logger.LogWarning("MeltdownChanceBehaviour instance is null, it might not have been instantiated or is otherwise unavailable. IsMeltdown flag cannot be read. Client players won't see the correct message when the apparatus is pulled.");
+                //MeltdownChanceBase.logger.LogWarning("MeltdownChanceBehaviour instance is null, it might not have been instantiated or is otherwise unavailable. IsMeltdown flag cannot be read. Client players won't see the correct message when the apparatus is pulled.");
             }
 
             return hasMeltdownStarted;
@@ -37,25 +41,28 @@ namespace MeltdownChance.Patches
             bool hasMeltdownStarted = false; // Default to false to ensure variable is always initialized.
 
             // Simplify determination of hasMeltdownStarted
-            if (MeltdownChanceBase.isHost)
+            if (MeltdownChanceBase.hasRoundStarted)
             {
-                hasMeltdownStarted = MeltdownChanceBase.EnableMeltdown;
-            }
-            else if (MeltdownChanceBehaviour.Instance is { } meltdownChanceBehaviourInstance)
-            {
-                hasMeltdownStarted = meltdownChanceBehaviourInstance.IsMeltdown;
-            }
-            else
-            {
-                MeltdownChanceBase.logger.LogWarning("MeltdownChanceBehaviour instance is null, it might not have been instantiated or is otherwise unavailable. IsMeltdown flag cannot be read. Client players won't see the correct message when the apparatus is pulled.");
-            }
-
-            if (hasMeltdownStarted)
-            {
-                PizzaTowerEscapeMusic.MusicManager musicManager = UnityEngine.Object.FindAnyObjectByType<PizzaTowerEscapeMusic.MusicManager>();
-                if (musicManager != null)
+                if (MeltdownChanceBase.isHost)
                 {
-                    musicManager.StopMusic();
+                    hasMeltdownStarted = MeltdownChanceBase.EnableMeltdown;
+                }
+                else if (MeltdownChanceBehaviour.Instance is { } meltdownChanceBehaviourInstance)
+                {
+                    hasMeltdownStarted = meltdownChanceBehaviourInstance.IsMeltdown;
+                }
+                else
+                {
+                    MeltdownChanceBase.logger.LogWarning("MeltdownChanceBehaviour instance is null, it might not have been instantiated or is otherwise unavailable. IsMeltdown flag cannot be read. Client players won't see the correct message when the apparatus is pulled.");
+                }
+
+                if (hasMeltdownStarted)
+                {
+                    PizzaTowerEscapeMusic.MusicManager musicManager = UnityEngine.Object.FindAnyObjectByType<PizzaTowerEscapeMusic.MusicManager>();
+                    if (musicManager != null)
+                    {
+                        musicManager.StopMusic();
+                    }
                 }
             }
         }

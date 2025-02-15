@@ -40,6 +40,7 @@ namespace MeltdownChance.Patches
             MeltdownChanceBase.isCompany = __instance.currentLevel.levelID == 3;
             MeltdownChanceBase.FirstPickUp = true;
             MeltdownChanceBase.isHost = GameNetworkManager.Instance.isHostingGame;
+            MeltdownChanceBase.hasRoundStarted = true;
 
             if (MeltdownChanceBase.isHost && !MeltdownChanceBase.isCompany)
             {
