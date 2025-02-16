@@ -20,6 +20,9 @@ If you encounter issues or have suggestions, visit the [Discord Post](https://di
 
 ## [Changelog](https://thunderstore.io/c/lethal-company/p/den/Meltdown_Chance/changelog/)
 
+### 2.8.2
+- minor update to ensure PTEM related methods only are patched when PTEM is installed
+
 ### 2.8.1
 - hotfix for log spam
 

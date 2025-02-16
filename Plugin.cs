@@ -29,7 +29,7 @@ namespace MeltdownChance
         public static bool configMessageValue;
         public static bool isHost;
         public static bool hasRoundStarted = false;
-  
+
 
         internal static MeltdownChanceBase? instance;
         public static GameObject MeltdownChanceManagerPrefab = null!;
@@ -38,14 +38,14 @@ namespace MeltdownChance
 
         void Awake()
         {
-            
+
             if (instance == null) instance = this;
             else return;
             MyConfig = new(base.Config);
 
             NetcodePatcher();
             InitializePrefabs();
-            
+
 
             configChanceValue = Math.Max(0, Math.Min(MeltdownChanceConfig.configChance.Value, 100));
             configMessageValue = MeltdownChanceConfig.configMessage.Value;
@@ -91,9 +91,11 @@ namespace MeltdownChance
             TryPatches(typeof(StartOfRoundPatch), "StartOfRound");
             TryPatches(typeof(MeltdownHandlerPatch), "FacilityMeltdown");
             TryPatches(typeof(EquipApparaticePatch), "EquipApparatice");
-            TryPatches(typeof(MusicManagerPatch), "MusicManager");
+            if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("bgn.pizzatowerescapemusic"))
+            {
+                TryPatches(typeof(MusicManagerPatch), "MusicManager");
+            }
 
-            
         }
 
         internal void TryPatches(Type patchType, string name)

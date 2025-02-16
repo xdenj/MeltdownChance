@@ -1,3 +1,6 @@
+## 2.8.2
+- minor update to ensure PTEM related methods only are patched when PTEM is installed
+
 ## 2.8.1
 - hotfix for log spam
 

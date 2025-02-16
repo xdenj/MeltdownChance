@@ -1,6 +1,6 @@
 {
   "name": "Meltdown_Chance",
-  "version_number": "2.8.1",
+  "version_number": "2.8.2",
   "website_url": "https://github.com/xdenj/MeltdownChance/",
   "description": "Adds a configurable chance to FacilityMeltdown",
   "dependencies": [
